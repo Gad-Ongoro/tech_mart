@@ -1,8 +1,14 @@
 import africastalking
 from django.http import JsonResponse
-from django.conf import settings
+from dotenv import load_dotenv
+import os
 
-africastalking.initialize(settings.AFRICAS_TALKING_USERNAME, settings.AFRICAS_TALKING_API_KEY)
+load_dotenv()
+
+africastalking.initialize(
+    os.environ.get('AFRICAS_TALKING_USERNAME'),
+    os.environ.get('AFRICAS_TALKING_API_KEY')
+)
 
 sms = africastalking.SMS
 
