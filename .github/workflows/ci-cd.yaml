@@ -9,6 +9,21 @@ jobs:
   test-and-merge:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -23,6 +38,17 @@ jobs:
         cd server
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+
+    - name: Set environment variables for DATABASE_URL
+      run: |
+        echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db" >> $GITHUB_ENV
+        echo "DEBUG=${{ secrets.DEBUG }}" >> $GITHUB_ENV
+        echo "SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" >> $GITHUB_ENV
+
+    - name: Apply migrations
+      run: |
+          cd server
+          python manage.py migrate
 
     - name: Run tests
       run: |
