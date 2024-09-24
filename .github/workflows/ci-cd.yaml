@@ -51,6 +51,9 @@ jobs:
           python manage.py migrate
 
     - name: Run tests
+      env:
+        AFRICAS_TALKING_API_KEY: ${{ secrets.AFRICAS_TALKING_API_KEY }}
+        AFRICAS_TALKING_USERNAME: ${{ secrets.AFRICAS_TALKING_USERNAME }}
       run: |
         cd server
         coverage run --source='.' manage.py test
