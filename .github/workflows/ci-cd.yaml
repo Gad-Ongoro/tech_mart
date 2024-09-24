@@ -43,7 +43,7 @@ jobs:
       run: |
         echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db" >> $GITHUB_ENV
         echo "DEBUG=${{ secrets.DEBUG }}" >> $GITHUB_ENV
-        echo "SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" >> $GITHUB_ENV
+        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
 
     - name: Apply migrations
       run: |
