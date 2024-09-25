@@ -65,5 +65,5 @@ jobs:
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git fetch origin
         git checkout main
-        git merge origin/development --no-ff --commit -m "Auto-merge from development to main"
+        git merge origin/development --no-ff --allow-unrelated-histories --commit -m "Auto-merge from development to main"
         git push origin main
