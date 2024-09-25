@@ -39,11 +39,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Set environment variables for DATABASE_URL
+    - name: Set environment variables
       run: |
         echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db" >> $GITHUB_ENV
         echo "DEBUG=${{ secrets.DEBUG }}" >> $GITHUB_ENV
         echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+        echo "AFRICAS_TALKING_USERNAME=${{ secrets.AFRICAS_TALKING_USERNAME }}" >> $GITHUB_ENV
+        echo "AFRICAS_TALKING_API_KEY=${{ secrets.AFRICAS_TALKING_API_KEY }}" >> $GITHUB_ENV
 
     - name: Apply migrations
       run: |
@@ -51,9 +53,6 @@ jobs:
           python manage.py migrate
 
     - name: Run tests
-      env:
-        AFRICAS_TALKING_API_KEY: ${{ secrets.AFRICAS_TALKING_API_KEY }}
-        AFRICAS_TALKING_USERNAME: ${{ secrets.AFRICAS_TALKING_USERNAME }}
       run: |
         cd server
         coverage run --source='.' manage.py test
